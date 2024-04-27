@@ -11,11 +11,14 @@ public class Document {
 
     private int sequence;
 
-    public Document(PaperSize paperSize, DocumentType documentType, int printDuration, int sequence) {
+    public Document(PaperSize paperSize, DocumentType documentType, int printDuration) {
         this.paperSize = paperSize;
         this.documentType = documentType;
         this.printDuration = printDuration;
         this.sequence = sequence;
+    }
+
+    public Document() {
     }
 
     public PaperSize getPaperSize() {
@@ -32,6 +35,10 @@ public class Document {
 
     public int getSequence() {
         return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
     }
 
     @Override

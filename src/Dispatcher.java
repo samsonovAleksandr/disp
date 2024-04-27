@@ -1,6 +1,10 @@
 import java.util.*;
 
-public class Dispatcher {
+public class Dispatcher implements Runnable {
+
+    int count = 1;
+
+    volatile Document document;
 
     Queue<Document> documents;
     List<Document> documentList;
@@ -10,7 +14,12 @@ public class Dispatcher {
         documentList = new ArrayList<>();
     }
 
-    public List<Document> stop() {
+    @Override
+    public void run() {
+        acceptTheDocument(document);
+    }
+
+    public List<Document> stopPrint() {
         if (documents.isEmpty()) {
             return List.of();
         } else {
@@ -24,7 +33,9 @@ public class Dispatcher {
     }
 
     public void acceptTheDocument(Document document) {
+        document.setSequence(count);
         documents.offer(document);
+        ++count;
     }
 
     public void cancelPrinting(Document document) {
@@ -56,6 +67,7 @@ public class Dispatcher {
         for (Document d : documentList) {
             time = d.getPrintDuration() + time;
         }
+        time = time / documentList.size();
         return time;
     }
 
@@ -63,9 +75,11 @@ public class Dispatcher {
         while (!documents.isEmpty()) {
             Document document = documents.poll();
             System.out.println("Print doc " + document);
-            documentList.add(document);
+            System.out.println(documentList.add(document));
         }
     }
 
-
+    public void setDocument(Document document) {
+        this.document = document;
+    }
 }
